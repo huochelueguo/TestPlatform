@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^add_book/$', views.add_book),
     url(r'^show_books/$', views.show_books),
     url(r'^$', TemplateView.as_view(template_name="index.html")),
+    url(r'^login_action/$', views.login_action),
 ]

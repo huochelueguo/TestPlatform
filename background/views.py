@@ -4,11 +4,11 @@ from django.shortcuts import render
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from background.models import DB_Book
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json
 from django.contrib.postgres import serializers
 from django.core import serializers
-
+from django.contrib import auth
 # Create your views here.
 @require_http_methods(["GET"])
 def add_book(request):
@@ -38,3 +38,16 @@ def show_books(request):
         response['msg'] = str(e)
         response['error_num'] = 1
     return JsonResponse(response)
+
+def login_action(request):
+    u_name = request.GET['username']
+    p_pwd = request.GET['password']
+    print(u_name, p_pwd)
+    user = auth.authenticate(username=u_name, password=p_pwd)
+    if user is not None:
+        # return redirect('/homepage/')
+        auth.login(request, user)
+        request.session['user'] = u_name
+        return HttpResponse("成功")
+    else:
+        return HttpResponse('用户名或密码错误，登录失败')
