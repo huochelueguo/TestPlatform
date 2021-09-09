@@ -32,10 +32,10 @@ export default {
   methods: {
     addBook(){
       this.$http.get('http://127.0.0.1:8000/add_book?book_name=' + this.input)
-        // axios.get('http://127.0.0.1:8000/add_book?book_name=' + this.input)
         .then((response) => {
-          var res = JSON.parse(response.bodyText)
-          if (res.error_num == 0) {
+          // var res = JSON.stringify(response.data)
+          var res_json = JSON.parse(JSON.stringify(response.data))
+          if (res_json.error_num === 0) {
             this.showBooks()
           } else {
             this.$message.error('新增书籍失败，请重试')
@@ -46,11 +46,11 @@ export default {
     showBooks(){
       this.$http.get('http://127.0.0.1:8000/show_books')
         .then((response) => {
-          var res = JSON.parse(response.bodyText)
-          console.log(res)
-          // console.log(test)
-          if (res.error_num == 0) {
-            this.bookList = res['list']
+          var res = JSON.stringify(response.data)
+          var res_json = JSON.parse(res)
+          console.log(res_json['list'])
+          if (res_json.error_num === 0) {
+            this.bookList = res_json['list']
           } else {
             this.$message.error('查询书籍失败')
             console.log(res['msg'])
