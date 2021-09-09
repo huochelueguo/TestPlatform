@@ -43,10 +43,10 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
+<!--      <div class="tips">-->
+<!--        <span style="margin-right:20px;">username: admin</span>-->
+<!--        <span> password: any</span>-->
+<!--      </div>-->
 
     </el-form>
   </div>
@@ -74,8 +74,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'sunze',
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -86,15 +86,34 @@ export default {
       redirect: undefined
     }
   },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
+  // watch: {
+  //   $route: {
+  //     handler: function(route) {
+  //       this.redirect = route.query && route.query.redirect
+  //     },
+  //     immediate: true
+  //   }
+  // },
   methods: {
+    handleLogin(formName) {
+      let {username, password} = this.loginForm
+      console.log(username)
+      console.log(password)
+      this.$http.get('login_action',{params:{
+          username:username,
+          password:password
+        }
+      }).then((response) => {
+        console.log(response)
+        this.$router.push('/')
+        this.loading = false
+        console.log(123)
+      }).catch(err => {
+        console.log(err)
+        this.loading = false
+        alert(err)
+      })
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -104,30 +123,28 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
     }
+    // handleLogin() {
+    //   this.$refs.loginForm.validate(valid => {
+    //     if (valid) {
+    //       this.loading = true
+    //       this.$store.dispatch('user/login', this.loginForm).then(() => {
+    //         this.$router.push({ path: this.redirect || '/' })
+    //         this.loading = false
+    //       }).catch(() => {
+    //         this.loading = false
+    //       })
+    //     } else {
+    //       console.log('error submit!!')
+    //       return false
+    //     }
+    //   })
+    // }
   }
 }
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
 $light_gray:#fff;
