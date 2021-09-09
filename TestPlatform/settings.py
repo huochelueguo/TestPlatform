@@ -53,58 +53,14 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ORIGIN_WHITELIST = (
-
-    'google.com',
-
-    'hostname.example.com'
-
-)
-
-CORS_ORIGIN_WHITELIST = ()
-
-CORS_ORIGIN_REGEX_WHITELIST = ()
-
-CORS_ALLOW_METHODS = (
-
-    'GET',
-
-    'POST',
-
-    'PUT',
-
-    'PATCH',
-
-    'DELETE',
-
-    'OPTIONS'
-
-)
-
-CORS_ALLOW_HEADERS = (
-
-    'x-requested-with',
-
-    'content-type',
-
-    'accept',
-
-    'origin',
-
-    'authorization',
-
-    'x-csrftoken'
-
-)
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'TestPlatform.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': ['./appfront/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,6 +72,11 @@ TEMPLATES = [
         },
     },
 ]
+# Add for vuejs
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "appfront/dist/static"),
+]
+
 
 WSGI_APPLICATION = 'TestPlatform.wsgi.application'
 
